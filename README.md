@@ -8,14 +8,14 @@ This repo contains a Gazebo simulation for ROS Kinetic of the ABB IRB120 6-axis 
 
 #### ABB IRB 120 industrial robot
 
-The ABB IRB120 Gazebo simulation is taken from the ROS-Industrial [ABB experimental metapackage](http://wiki.ros.org/abb_experimental). Clone it to your catkin_ws using the kinetic-devel branch
+The ABB IRB120 Gazebo simulation is taken from the ROS-Industrial [ABB experimental metapackage](http://wiki.ros.org/abb_experimental). Clone it to your catkin_ws using the kinetic-devel branch:
 
 ```
 cd catkin_ws/src
 git clone https://github.com/ros-industrial/abb_experimental.git
 ```
 
-The previous ABB experimental metapackage may depend of the main ROS-Industrial (ABB stack)[http://wiki.ros.org/abb]. Please install its kinetic-devel branch:
+The previous ABB experimental metapackage may depend of the main ROS-Industrial [ABB stack](http://wiki.ros.org/abb). Please clone its kinetic-devel branch:
 
 ```
 git clone https://github.com/ros-industrial/abb.git
