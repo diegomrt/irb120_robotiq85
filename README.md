@@ -72,15 +72,21 @@ roslaunch irb120_robotiq85_gazebo irb120_robotiq85_kinect_gazebo_world.launch
 
 ### Basic Python programs to interface moveit_commander API
 
-Forward kinematics plan and execution:
+First, launch the basic Gazebo simulation + MoveIt Commander. Then, there are three options: 
+
+1. Forward kinematics plan and execution:
 ```
 rosrun irb120_robotiq85_gazebo forward_kinematics.py
 ```
-Inverse kinematics plan and execution (move joints):
+<video src="media/irb120_robotiq85_basicFK.mp4" width="640" height="480" controls preload></video>
+
+2. Inverse kinematics plan and execution (move joints):
 ```
 rosrun irb120_robotiq85_gazebo IK_destination pose.py
 ```
-Cartesian path (IK) plan and execution (move linear):
+<video src="media/irb120_robotiq85_basicIK.mp4" width="640" height="480" controls preload></video>
+
+3. Cartesian path (IK) plan and execution (move linear):
 ```
 rosrun irb120_robotiq85_gazebo IK_cartesian_path.py
 ```

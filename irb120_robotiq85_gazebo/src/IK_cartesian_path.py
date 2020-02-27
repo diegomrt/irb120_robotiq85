@@ -10,69 +10,72 @@ from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
-# Inicializacion
+# Init stuff
 moveit_commander.roscpp_initialize(sys.argv)
-rospy.init_node('moving_panda_robot', anonymous=True)
+rospy.init_node('moving_irb120_robot', anonymous=True)
 robot = moveit_commander.RobotCommander()
 scene = moveit_commander.PlanningSceneInterface()
-arm_group = moveit_commander.MoveGroupCommander("panda_arm")
-hand_group = moveit_commander.MoveGroupCommander("hand")
+arm_group = moveit_commander.MoveGroupCommander("irb_120")
+hand_group = moveit_commander.MoveGroupCommander("robotiq_85")
 
-# Para publicar trayectorias en RViz
+# Publish trajectory in RViz
 display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
                                                moveit_msgs.msg.DisplayTrajectory,
                                                queue_size=20)
 
-# Funcion para mover eje a eje un robot de 7 ejes
-def move_joint_arm(joint_0,joint_1,joint_2,joint_3,joint_4,joint_5,joint_6):
-    joint_goal = arm_group.get_current_joint_values()
-    joint_goal[0] = joint_0
-    joint_goal[1] = joint_1
-    joint_goal[2] = joint_2
-    joint_goal[3] = joint_3
-    joint_goal[4] = joint_4
-    joint_goal[5] = joint_5
-    joint_goal[6] = joint_6
+# Inverse Kinematics (IK): move TCP to given position and orientation
+def move_pose_arm(roll,pitch,yaw,x,y,z):
+    pose_goal = geometry_msgs.msg.Pose()
+    quat = quaternion_from_euler(roll,pitch,yaw)
+    pose_goal.orientation.x = quat[0]
+    pose_goal.orientation.y = quat[1]
+    pose_goal.orientation.z = quat[2]
+    pose_goal.orientation.w = quat[3]
+    pose_goal.position.x = x
+    pose_goal.position.y = y
+    pose_goal.position.z = z
+    arm_group.set_pose_target(pose_goal)
 
-    arm_group.go(joint_goal, wait=True)
-    arm_group.stop() # Garantiza que no hay movimiento residual
+    plan = arm_group.go(wait=True)
 
-# Moviento a una pose "home" antes de empezar la trayectoria
-rospy.loginfo("Moving arm to pose Home")	
-move_joint_arm(0,-0.3,0,-1.4,0,1,pi/4)
-rospy.sleep(3)
+    arm_group.stop() # To guarantee no residual movement
+    arm_group.clear_pose_targets()
 
+# Move to HOME before start
+rospy.loginfo("Moving arm to HOME point")	
+move_pose_arm(0,0.8,0,0.4,0,0.6)
+rospy.sleep(1)
 
-# Creacion de los puntos de la trayectoria
+# Linear trajectory creation (Point by Point)
 waypoints = []
 
-wpose = arm_group.get_current_pose().pose # Tomamos la pose actual
+wpose = arm_group.get_current_pose().pose
 wpose.position.z -= 0.3  # First move up (z), relative units
 wpose.position.y += 0.2  # and sideways (y)
-waypoints.append(copy.deepcopy(wpose)) # Se usa deepcopy para 
+waypoints.append(copy.deepcopy(wpose))
 
-# Posicion 2, lateral (absoluta)
+# Position 2, lateral (absolute)
 wpose.position.x = 0
-wpose.position.y = 0.7
+wpose.position.y = 0.5
 wpose.position.z = 0.5  
 waypoints.append(copy.deepcopy(wpose))
 
-# Posicion 3, casi sobre el eje del robot (absoluta)
+# Position 3, over the robot (absolute)
 wpose.position.x = 0.2
 wpose.position.y = 0
-wpose.position.z = 0.8
+wpose.position.z = 0.7
 waypoints.append(copy.deepcopy(wpose))
 
-# Posicion 4, lateral opuesto (absoluta)
+# Position 4, lateral (absolute)
 wpose.position.x = 0
-wpose.position.y = -0.7
+wpose.position.y = -0.5
 wpose.position.z = 0.5  
 waypoints.append(copy.deepcopy(wpose))
 
-# Posicion 5, frontal (absoluta)
-wpose.position.x = 0.7
+# Position 5, frontal (absolute)
+wpose.position.x = 0.5
 wpose.position.y = 0
-wpose.position.z = 0.5  
+wpose.position.z = 0.3  
 waypoints.append(copy.deepcopy(wpose))
 
 
@@ -82,14 +85,13 @@ waypoints.append(copy.deepcopy(wpose))
                                    0.0)         # jump_threshold
 rospy.loginfo("Cartesian path planned")	
 
-# Visualizacion en RVIZ de lo calculado
+# RVIZ trajectory visualization
 display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 display_trajectory.trajectory_start = robot.get_current_state()
 display_trajectory.trajectory.append(plan)
-# Publish
-display_trajectory_publisher.publish(display_trajectory);
+display_trajectory_publisher.publish(display_trajectory); # Publish
 
-# Ejecucion de la trayectoria completa
+# Complete trajectory execution
 arm_group.execute(plan, wait=True)
 rospy.loginfo("Cartesian path finished. Shutting down")	
 moveit_commander.roscpp_shutdown()
