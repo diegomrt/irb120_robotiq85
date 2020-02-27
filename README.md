@@ -2,7 +2,10 @@
 
 This repo contains a Gazebo simulation for ROS Kinetic of the ABB IRB120 6-axis industrial robot with a Robotiq 85 2-finger gripper, as seen in the picture:
 
-| ![irb120_white](media/irb120_robotiq85_white.png) | ![irb120_kinect](media/irb120_robotiq85_kinect.png)  |
+| ABB IRB 120 with Robotiq 85 gripper | ABB IRB 120 with gripper + Kinect camera |
+| ----------------------------------- | ---------------------------------------- |
+| ![](media/irb120_robotiq85_white.png) | ![](media/irb120_robotiq85_kinect.png) |
+
 
 ## Dependencies and installation ##
 
