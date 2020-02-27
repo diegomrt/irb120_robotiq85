@@ -6,7 +6,7 @@ This repo contains a Gazebo simulation for ROS Kinetic of the ABB IRB120 6-axis 
 | ----------------------------------- | ---------------------------------------- |
 | ![](media/irb120_robotiq85_white.png) | ![](media/irb120_robotiq85_kinect.png) |
 
-#### Inverse Kinematics example ####
+#### Inverse Kinematics video example ####
 
 [![Video](https://img.youtube.com/vi/VPPY1_zFruo/maxresdefault.jpg)](https://youtu.be/VPPY1_zFruo)
 
