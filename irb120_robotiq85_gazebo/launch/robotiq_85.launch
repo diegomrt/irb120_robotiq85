@@ -19,6 +19,6 @@
 
   <include file="$(find robotiq_85_gazebo)/launch/controller_utils.launch"/>
   <rosparam file="$(find robotiq_85_gazebo)/controller/gripper_controller_robotiq.yaml" command="load"/> 
-  <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper --shutdown-timeout 0.5" />
+  <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper" />
 
 </launch>
