@@ -17,13 +17,17 @@ git clone https://github.com/ros-industrial/abb_experimental.git
 
 The previous ABB experimental metapackage may depend of the main ROS-Industrial [ABB stack](http://wiki.ros.org/abb). Please clone its kinetic-devel branch:
 
-```git clone https://github.com/ros-industrial/abb.git```
+```
+git clone https://github.com/ros-industrial/abb.git
+```
 
 ### Robotiq 85 gripper ###
 
 The Gazebo simulation for the Robotiq85 gripper is taken from the repo provided by Stanley Innovation. Clone it to your catkin_ws and build it: 
 
-```git clone https://github.com/StanleyInnovation/robotiq_85_gripper.git```
+```
+git clone https://github.com/StanleyInnovation/robotiq_85_gripper.git
+```
 
 ### Install this package ###
 
@@ -40,29 +44,46 @@ source devel/setup.bash
 ### Gazebo simulation of the IRB120-Robotiq85 + Moveit config + Rviz plugin ###
 
 Launch the basic Gazebo simulation, including State and Command ROS controllers:
-```roslaunch irb120_robotiq85_gazebo irb120_robotiq85_gazebo.launch ```
+```
+roslaunch irb120_robotiq85_gazebo irb120_robotiq85_gazebo.launch 
+```
 Launch the basic Gazebo simulation + MoveIt Commander:
-```roslaunch irb120_robotiq85_gazebo irb120_robotiq85_gazebo_moveit.launch ```
+```
+roslaunch irb120_robotiq85_gazebo irb120_robotiq85_gazebo_moveit.launch
+```
 Launch the basic Gazebo simulation + MoveIt Commander + RViz including MoveIt plugin:
-```roslaunch irb120_robotiq85_gazebo irb120_robotiq85_gazebo_moveit_rviz.launch ```
+```
+roslaunch irb120_robotiq85_gazebo irb120_robotiq85_gazebo_moveit_rviz.launch
+```
 
 ### Gazebo simulation of the IRB120-Robotiq85 with a Kinect camera
 
 Launch the basic Gazebo simulation including a Kinect camera
-```roslaunch irb120_robotiq85_gazebo irb120_robotiq85_kinect_gazebo.launch ```
+```
+roslaunch irb120_robotiq85_gazebo irb120_robotiq85_kinect_gazebo.launch
+```
 Launch the basic Gazebo simulation including a Kinect camera and some basic objects in the scene:
-```roslaunch irb120_robotiq85_gazebo irb120_robotiq85_kinect_gazebo_world.launch ```
+```
+roslaunch irb120_robotiq85_gazebo irb120_robotiq85_kinect_gazebo_world.launch
+```
 
 ### Basic Python programs to interface moveit_commander API
 
 Forward kinematics plan and execution:
-```rosrun panda_diego forward_kinematics.py```
+```
+rosrun irb120_robotiq85_gazebo forward_kinematics.py
+```
 Inverse kinematics plan and execution (move joints):
-```rosrun panda_diego IK_destination pose.py```
+```
+rosrun irb120_robotiq85_gazebo IK_destination pose.py
+```
 Cartesian path (IK) plan and execution (move linear):
-```rosrun panda_diego IK_cartesian_path.py```
+```
+rosrun irb120_robotiq85_gazebo IK_cartesian_path.py
+```
 
 ## TO DO List as February 26, 2020
 
+* Update .py files
 * Complete a pick and place example in Gazebo
-* Comfigure perception in MoveIt using the Kinect static depth camera
+* Configure perception in MoveIt using the Kinect static depth camera
