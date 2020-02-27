@@ -14,7 +14,7 @@
 
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="worlds/empty.world"/>
+    <arg name="world_name" value="$(find irb120_robotiq85_gazebo)/worlds/wall_object.world"/>
     <arg name="gui" value="true"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
@@ -22,17 +22,16 @@
   </include>
 
   <!-- send robot urdf to param server -->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find irb120_robotiq85_gazebo)/urdf/irb120_robotiq85_macro.xacro'"/>
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find irb120_robotiq85_gazebo)/urdf/irb120_robotiq85_kinect.macro.xacro'"/>
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model irb120_robotiq85" respawn="false" output="screen" />
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model irb120_robotiq85_kinect" respawn="false" output="screen" />
 
   <!-- convert joint states to TF transforms for rviz, etc -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-  output="screen">
-  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
 
   <!-- ROS CONTROL INTERFACE init and start Gazebo plugins -->
+
     <!-- load the joint state controller (just reads joint positions) for arm and gripper-->
   <rosparam file="$(find irb120_robotiq85_gazebo)/config/joint_state_controller.yaml" command="load" />
   <node name="joint_state_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn joint_state_controller" />
@@ -51,5 +50,6 @@
 
   <!-- launch rviz to check TF data -->
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find irb120_robotiq85_gazebo)/rviz/irb120.rviz" />
+
 
 </launch>
